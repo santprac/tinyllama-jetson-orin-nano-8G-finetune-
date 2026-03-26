@@ -32,8 +32,8 @@ Production-ready implementation for fine-tuning **TinyLlama-1.1B-Chat-v1.0** on 
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/tinyllama-jetson-finetune.git
-cd tinyllama-jetson-finetune
+git clone https://github.com/santprac/tinyllama-jetson-orin-nano-8G-finetune-.git
+cd tinyllama-jetson-orin-nano-8G-finetune-
 
 # 2. Install dependencies
 pip install -r requirements_working.txt
@@ -268,7 +268,7 @@ If you use this work, please cite:
   title = {TinyLlama Fine-Tuning on Jetson Orin Nano 8GB},
   year = {2026},
   publisher = {GitHub},
-  url = {https://github.com/YOUR_USERNAME/tinyllama-jetson-finetune}
+  url = {https://github.com/santprac/tinyllama-jetson-orin-nano-8G-finetune-}
 }
 ```
 
@@ -286,7 +286,7 @@ Contributions are welcome! Please:
 
 ## 💬 Contact
 
-- GitHub Issues: [Report bugs or request features](https://github.com/YOUR_USERNAME/tinyllama-jetson-finetune/issues)
+- GitHub Issues: [Report bugs or request features](https://github.com/santprac/tinyllama-jetson-orin-nano-8G-finetune-/issues)
 - LinkedIn: [Your Profile](#)
 
 ---
