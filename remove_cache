@@ -1,0 +1,2 @@
+  find . -name "__pychache__" -delete
+  find . -name "*.pyc" -delete

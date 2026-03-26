@@ -1,0 +1,57 @@
+# TinyLlama Fine-tuning Requirements for Jetson Orin Nano (NO BitsAndBytes)
+# CUDA 12.6, Python 3.10.12, JetPack 6.4.7
+# Using PyTorch native FP16 instead of 4-bit quantization
+
+# ============================================
+# Core Deep Learning (use system-installed PyTorch)
+# ============================================
+# torch==2.8.0  # Already installed system-wide
+# torchvision==0.23.0  # Already installed system-wide
+
+# ============================================
+# Transformers Ecosystem
+# ============================================
+transformers==4.47.1
+accelerate==1.2.1
+datasets==3.2.0
+huggingface-hub>=0.20.0
+
+# ============================================
+# Fine-tuning Libraries
+# ============================================
+peft==0.14.0
+trl==0.12.2
+
+# ============================================
+# CRITICAL: NumPy must be 1.x (not 2.x)
+# ============================================
+numpy<2.0
+
+# ============================================
+# NLP Utilities
+# ============================================
+sentencepiece==0.2.0
+protobuf<4.0.0
+tokenizers>=0.15.0
+
+# ============================================
+# Scientific Computing
+# ============================================
+scipy==1.13.1
+
+# ============================================
+# Logging and Monitoring (Optional)
+# ============================================
+tensorboard>=2.15.0
+tqdm>=4.65.0
+
+# ============================================
+# System Monitoring (Optional)
+# ============================================
+psutil>=5.9.0
+GPUtil>=1.4.0
+
+# ============================================
+# NOTE: BitsAndBytes removed due to CUDA 12.6 incompatibility on ARM64
+# Using PyTorch native FP16 precision instead
+# ============================================

@@ -1,0 +1,69 @@
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Training outputs
+results/
+output/
+TinyLlama-1.1B-qlora/
+TinyLlama-1.1B-merged/
+TinyLlama-qlora/
+TinyLlama_1.1B_qlora/
+
+# Data
+data_mapping/
+data_mapping.json/
+*.jsonl
+
+# Logs
+*.log
+train_*.log
+sft_*.log
+
+# Checkpoints
+checkpoint-*/
+
+# Test frames
+test_frames/
+
+# Model weights
+*.bin
+*.safetensors
+*.pth
+*.pt
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# HuggingFace cache
+.cache/
+wandb/
+
+# Tensorboard
+runs/
+lightning_logs/
+
+# Temporary files
+*.tmp
+temp/
+tmp/
