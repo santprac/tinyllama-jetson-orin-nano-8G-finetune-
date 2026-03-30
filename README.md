@@ -12,7 +12,7 @@ Production-ready implementation for fine-tuning **TinyLlama-1.1B-Chat-v1.0** on 
 - ✅ **22 minutes** training time for 3,000 samples (1 epoch)
 - ✅ **563,200 trainable parameters** out of 1.1B (0.05%)
 - ✅ **4.5GB GPU memory** usage during training
-- ✅ **FP16 precision** (BitsAndBytes 4-bit doesn't work on Jetson ARM64)
+- ✅ **FP16 precision** (BitsAndBytes 4-bit quantization not supported on Jetson ARM64/CUDA 12.6)
 - ✅ **Complete automation** with shell scripts
 - ✅ **Modular architecture** for easy customization
 
@@ -72,7 +72,7 @@ chmod +x run_training_optimized.sh
 ## 🔧 System Requirements
 
 - **Hardware**: NVIDIA Jetson Orin Nano 8GB (or any GPU with 8GB+ VRAM)
-- **OS**: Ubuntu 20.04+ (JetPack 6.4.7 for Jetson)
+- **OS**: Ubuntu 20.04+ (JetPack 6.2.1 for Jetson)
 - **CUDA**: 12.6.68
 - **Python**: 3.10.12
 - **PyTorch**: 2.8.0 (pre-installed on Jetson)
@@ -116,7 +116,7 @@ MAX_SEQ_LEN = 64                   # Sequence length
 
 2. **Model Loading** (`sft_model_tokenization.py`)
    - Loads TinyLlama in FP16 precision
-   - **NO BitsAndBytes** (incompatible with Jetson CUDA 12.6 ARM64)
+   - **NO BitsAndBytes** (4-bit quantization not supported on Jetson CUDA 12.6 ARM64)
    - Auto GPU placement
 
 3. **LoRA Application** (`sft_lora_config.py`)
@@ -174,9 +174,9 @@ echo 1020000000 | sudo tee /sys/devices/platform/bus@0/17000000.gpu/devfreq/1700
 # Cursor uses 2.5-3.5GB, GNOME uses 1.5-2GB
 ```
 
-### Issue: BitsAndBytes Error
+### Issue: BitsAndBytes 4-bit Quantization Not Supported
 ```python
-# DON'T use BitsAndBytes on Jetson
+# DON'T use BitsAndBytes on Jetson (not supported on ARM64/CUDA 12.6)
 # quantization_config = BitsAndBytesConfig(load_in_4bit=True)  # ❌
 
 # USE FP16 instead

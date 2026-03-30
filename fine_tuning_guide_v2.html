@@ -418,13 +418,13 @@
                     This guide documents a <strong>production-tested</strong> implementation of fine-tuning 
                     TinyLlama-1.1B-Chat-v1.0 on the NVIDIA Jetson Orin Nano 8GB using LoRA (Low-Rank Adaptation) 
                     and Supervised Fine-Tuning (SFT). The implementation uses <strong>FP16 precision</strong> 
-                    instead of 4-bit quantization due to BitsAndBytes incompatibility with CUDA 12.6 on ARM64.
+                    instead of 4-bit quantization because BitsAndBytes library doesn't support CUDA 12.6 on ARM64 architecture.
                 </p>
 
                 <div class="success-box">
                     <strong>Actual Training Results (March 20, 2026):</strong>
                     <ul>
-                        <li><strong>Hardware:</strong> NVIDIA Jetson Orin Nano 8GB (CUDA 12.6, JetPack 6.4.7)</li>
+                        <li><strong>Hardware:</strong> NVIDIA Jetson Orin Nano 8GB (CUDA 12.6, JetPack 6.2.1)</li>
                         <li><strong>Training Time:</strong> 1331 seconds (~22.2 minutes) for 1 epoch on 3,000 samples</li>
                         <li><strong>Speed:</strong> 1.77 seconds/iteration, 2.25 samples/second</li>
                         <li><strong>Trainable Parameters:</strong> 563,200 out of 1,100,611,584 (0.0512%)</li>
@@ -440,7 +440,7 @@
                     <ul>
                         <li><strong>Close Cursor IDE:</strong> Cursor uses 2.5-3.5GB GPU memory → Must close before training</li>
                         <li><strong>GPU Frequency:</strong> Manually set to 1020 MHz (jetson_clocks doesn't fully work on JetPack 6.x)</li>
-                        <li><strong>No BitsAndBytes:</strong> Use PyTorch native FP16 instead of 4-bit quantization</li>
+                        <li><strong>No BitsAndBytes:</strong> 4-bit quantization not supported on Jetson ARM64/CUDA 12.6 - use PyTorch native FP16</li>
                         <li><strong>NumPy Version:</strong> Must use NumPy 1.x (not 2.x)</li>
                         <li><strong>Transformers Version:</strong> Use 4.46.3 (not 4.47.x for TRL compatibility)</li>
                     </ul>
@@ -611,7 +611,7 @@ Detective Jameson had been called to the vineyard on the outskirts...&lt;/s&gt;<
             <!-- Step 3: Model & Tokenizer Loading -->
             <div class="section">
                 <h2>Step 3: Model & Tokenizer Loading (sft_model_tokenization.py)</h2>
-                <p>Load TinyLlama in FP16 precision. <strong>NO BitsAndBytes 4-bit quantization</strong> (incompatible with Jetson CUDA 12.6 ARM64).</p>
+                <p>Load TinyLlama in FP16 precision. <strong>NO BitsAndBytes 4-bit quantization</strong> (not supported on Jetson ARM64/CUDA 12.6).</p>
 
                 <div class="code-block"><span class="comment"># File: sft_model_tokenization.py</span>
 <span class="keyword">import</span> torch
@@ -678,7 +678,7 @@ Detective Jameson had been called to the vineyard on the outskirts...&lt;/s&gt;<
                         <tr>
                             <td>4-bit (BitsAndBytes)</td>
                             <td>~1.1 GB</td>
-                            <td>❌ No (CUDA 12.6 ARM64 incompatible)</td>
+                            <td>❌ No (not supported on ARM64/CUDA 12.6)</td>
                         </tr>
                     </table>
                 </div>
@@ -1133,7 +1133,7 @@ watch -n 1 <span class="string">"tegrastats | grep GR3D"</span></div>
                 <h3>✅ What Worked</h3>
                 <div class="success-box">
                     <ul>
-                        <li><strong>FP16 instead of 4-bit:</strong> BitsAndBytes doesn't work on Jetson; PyTorch native FP16 is perfect</li>
+                        <li><strong>FP16 instead of 4-bit:</strong> BitsAndBytes doesn't support Jetson ARM64/CUDA 12.6; PyTorch native FP16 is perfect</li>
                         <li><strong>Small LoRA rank (r=4):</strong> Sufficient for fine-tuning, keeps memory low (563k params)</li>
                         <li><strong>Gradient accumulation:</strong> Effective batch size of 4 with physical batch of 1</li>
                         <li><strong>Short sequences (64 tokens):</strong> Dramatically reduces memory footprint</li>
@@ -1148,7 +1148,7 @@ watch -n 1 <span class="string">"tegrastats | grep GR3D"</span></div>
                 <h3>❌ Common Pitfalls to Avoid</h3>
                 <div class="danger-box">
                     <ul>
-                        <li><strong>Don't use BitsAndBytes on Jetson:</strong> CUDA 12.6 ARM64 incompatibility</li>
+                        <li><strong>Don't use BitsAndBytes on Jetson:</strong> 4-bit quantization not supported on ARM64/CUDA 12.6</li>
                         <li><strong>Don't forget to close Cursor:</strong> It uses 3GB+ GPU memory</li>
                         <li><strong>Don't skip GPU frequency tuning:</strong> Massive performance impact (1.67x)</li>
                         <li><strong>Don't use NumPy 2.x:</strong> Causes dependency conflicts with PyTorch</li>
@@ -1230,14 +1230,14 @@ NVML_SUCCESS == r INTERNAL ASSERT FAILED</pre>
                     </ul>
                 </div>
 
-                <h3>🟡 Error: BitsAndBytes Not Working</h3>
+                <h3>🟡 Error: BitsAndBytes 4-bit Quantization Not Supported</h3>
                 <div class="warning-box">
                     <strong>Symptoms:</strong>
                     <pre>OSError: libcudart.so not found
 ImportError: libbitsandbytes_cuda126.so</pre>
                     
                     <strong>Solution:</strong>
-                    <p><strong>Don't use BitsAndBytes on Jetson!</strong> It's incompatible with CUDA 12.6 on ARM64. Use FP16 instead:</p>
+                    <p><strong>Don't use BitsAndBytes on Jetson!</strong> The library doesn't support CUDA 12.6 on ARM64 architecture. Use FP16 instead:</p>
                     <div class="code-block"><span class="comment"># Instead of this (WRONG):</span>
 quantization_config = BitsAndBytesConfig(load_in_4bit=<span class="keyword">True</span>)
 
@@ -1309,7 +1309,7 @@ dataset = load_dataset(<span class="string">"HuggingFaceH4/ultrachat_200k"</span
                 <div class="info-box">
                     <ul>
                         <li><strong>Hardware:</strong> NVIDIA Jetson Orin Nano 8GB (or any GPU with 8GB+ VRAM)</li>
-                        <li><strong>OS:</strong> Ubuntu 20.04+ (JetPack 6.4.7 for Jetson)</li>
+                        <li><strong>OS:</strong> Ubuntu 20.04+ (JetPack 6.2.1 for Jetson)</li>
                         <li><strong>CUDA:</strong> 12.6.68 (pre-installed on Jetson)</li>
                         <li><strong>Python:</strong> 3.10.12</li>
                         <li><strong>PyTorch:</strong> 2.8.0 (pre-installed on Jetson)</li>
@@ -1319,8 +1319,8 @@ dataset = load_dataset(<span class="string">"HuggingFaceH4/ultrachat_200k"</span
 
                 <h3>Package Versions (requirements_working.txt)</h3>
                 <div class="code-block"><span class="comment"># TinyLlama Fine-tuning Requirements for Jetson Orin Nano</span>
-<span class="comment"># CUDA 12.6, Python 3.10.12, JetPack 6.4.7</span>
-<span class="comment"># Using PyTorch native FP16 (NO BitsAndBytes)</span>
+<span class="comment"># CUDA 12.6, Python 3.10.12, JetPack 6.2.1</span>
+<span class="comment"># Using PyTorch native FP16 (NO BitsAndBytes - not supported on ARM64)</span>
 
 <span class="comment"># Core Deep Learning (use system PyTorch)</span>
 <span class="comment"># torch==2.8.0  # Already installed system-wide</span>
@@ -1479,7 +1479,7 @@ python3 sft_model_inference_nopipe.py</div>
                 <div class="success-box">
                     <strong>Key Takeaways:</strong>
                     <ul>
-                        <li><strong>FP16 works great:</strong> BitsAndBytes 4-bit is not needed (and doesn't work on Jetson)</li>
+                        <li><strong>FP16 works great:</strong> BitsAndBytes 4-bit quantization is not supported on Jetson ARM64 (and not needed)</li>
                         <li><strong>LoRA is efficient:</strong> Only 563k trainable params (0.05%) is sufficient</li>
                         <li><strong>Memory management is critical:</strong> Close IDE, use TTY, optimize batch size</li>
                         <li><strong>GPU frequency matters:</strong> 1020 MHz vs 612 MHz = 15-20% speed difference</li>

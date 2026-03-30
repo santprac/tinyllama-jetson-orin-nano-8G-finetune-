@@ -1,5 +1,5 @@
 # TinyLlama Fine-tuning Requirements for Jetson Orin Nano (NO BitsAndBytes)
-# CUDA 12.6, Python 3.10.12, JetPack 6.4.7
+# CUDA 12.6, Python 3.10.12, JetPack 6.2.1
 # Using PyTorch native FP16 instead of 4-bit quantization
 
 # ============================================
