@@ -422,7 +422,7 @@
                 </p>
 
                 <div class="success-box">
-                    <strong>Actual Training Results (March 20, 2026):</strong>
+                    <strong>Actual Training Results (March 26, 2026):</strong>
                     <ul>
                         <li><strong>Hardware:</strong> NVIDIA Jetson Orin Nano 8GB (CUDA 12.6, JetPack 6.2.1)</li>
                         <li><strong>Training Time:</strong> 1331 seconds (~22.2 minutes) for 1 epoch on 3,000 samples</li>
@@ -1309,7 +1309,7 @@ dataset = load_dataset(<span class="string">"HuggingFaceH4/ultrachat_200k"</span
                 <div class="info-box">
                     <ul>
                         <li><strong>Hardware:</strong> NVIDIA Jetson Orin Nano 8GB (or any GPU with 8GB+ VRAM)</li>
-                        <li><strong>OS:</strong> Ubuntu 20.04+ (JetPack 6.2.1 for Jetson)</li>
+                        <li><strong>OS:</strong> Ubuntu 22.04 LTS (JetPack 6.2.1 for Jetson)</li>
                         <li><strong>CUDA:</strong> 12.6.68 (pre-installed on Jetson)</li>
                         <li><strong>Python:</strong> 3.10.12</li>
                         <li><strong>PyTorch:</strong> 2.8.0 (pre-installed on Jetson)</li>
@@ -1319,7 +1319,7 @@ dataset = load_dataset(<span class="string">"HuggingFaceH4/ultrachat_200k"</span
 
                 <h3>Package Versions (requirements_working.txt)</h3>
                 <div class="code-block"><span class="comment"># TinyLlama Fine-tuning Requirements for Jetson Orin Nano</span>
-<span class="comment"># CUDA 12.6, Python 3.10.12, JetPack 6.2.1</span>
+<span class="comment"># Ubuntu 22.04 LTS, CUDA 12.6, Python 3.10.12, JetPack 6.2.1</span>
 <span class="comment"># Using PyTorch native FP16 (NO BitsAndBytes - not supported on ARM64)</span>
 
 <span class="comment"># Core Deep Learning (use system PyTorch)</span>

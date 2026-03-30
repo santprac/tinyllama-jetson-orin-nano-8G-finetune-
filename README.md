@@ -72,7 +72,7 @@ chmod +x run_training_optimized.sh
 ## 🔧 System Requirements
 
 - **Hardware**: NVIDIA Jetson Orin Nano 8GB (or any GPU with 8GB+ VRAM)
-- **OS**: Ubuntu 20.04+ (JetPack 6.2.1 for Jetson)
+- **OS**: Ubuntu 22.04 LTS (JetPack 6.2.1 for Jetson)
 - **CUDA**: 12.6.68
 - **Python**: 3.10.12
 - **PyTorch**: 2.8.0 (pre-installed on Jetson)
